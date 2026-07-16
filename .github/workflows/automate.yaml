@@ -46,7 +46,7 @@ env:
 jobs:
   monitoring-deploy:
     name: Deploy Monitoring Stack
-    runs-on: Self-Hosted
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
