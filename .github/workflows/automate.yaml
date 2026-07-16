@@ -88,7 +88,7 @@ jobs:
           helm upgrade --install prometheus prometheus-community/kube-prometheus-stack \
             --namespace $K8S_NAMESPACE \
             --create-namespace \
-            --atomic \
+            --rollback-on-failure \
             --timeout 10m
 
       - name: Write Loki values file
@@ -148,7 +148,7 @@ jobs:
             --namespace $K8S_NAMESPACE \
             --create-namespace \
             -f loki-values.yaml \
-            --atomic \
+            --rollback-on-failure \
             --timeout 10m
 
       - name: Install/Upgrade Promtail
@@ -159,7 +159,7 @@ jobs:
             --namespace $K8S_NAMESPACE \
             --create-namespace \
             --set "config.clients[0].url=http://loki.$K8S_NAMESPACE.svc.cluster.local:3100/loki/api/v1/push" \
-            --atomic \
+            --rollback-on-failure \
             --timeout 10m
 
       - name: Verify pods
