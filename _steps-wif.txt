@@ -1,0 +1,17 @@
+WIF Setup Summary — niduvara-xxxxxx
+─────────────────────────────────────────
+
+1. Enable required APIs
+   gcloud services enable iamcredentials.googleapis.com sts.googleapis.com --project=niduvara-xxxxxx
+
+
+2. Create Workload Identity Pool
+   gcloud iam workload-identity-pools create "github-pool" --project="niduvara-xxxxxx" --location="global" --display-name="GitHub Actions Pool"
+
+
+3. Create OIDC Provider (restricted to specific repo)
+   gcloud iam workload-identity-pools providers create-oidc "github-provider" --project="niduvara-499617" --location="global" --workload-identity-pool="github-pool" --display-name="GitHub Provider" --attribute-mapping="google.subject=assertion.sub,attribute.repository=assertion.repository" --issuer-uri="https://token.actions.githubusercontent.com" --attribute-condition="assertion.repository=='<github-username>/<repo-name>'"
+
+
+4. Bind GitHub repo to service account
+   gcloud iam service-accounts add-iam-policy-binding "<service-account-name>@niduvara-xxxxxx.iam.gserviceaccount.com" --project="niduvara-499617" --role="roles/iam.workloadIdentityUser" --member="principalSet://iam.googleapis.com/projects/445028238023/locations/global/workloadIdentityPools/github-pool/attribute.repository/<github-username>/<repo-name>"
