@@ -1,4 +1,4 @@
-name: Monitoring Stack CD (Prometheus + Grafana + Loki + Promtail)
+name: (Prometheus + Grafana + Loki + Promtail)
 
 on:
   workflow_dispatch:
@@ -40,7 +40,7 @@ env:
   GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
   GCP_REGION: ${{ secrets.GCP_REGION }}
   GKE_CLUSTER: ${{ secrets.GKE_CLUSTER_NAME }}
-  GKE_REGION: ${{ secrets.GKE_CLUSTER_LOCATION }}
+  GKE_ZONE: ${{ secrets.GKE_CLUSTER_LOCATION }}
   K8S_NAMESPACE: ${{ github.event.inputs.namespace }}
 
 jobs:
@@ -66,7 +66,7 @@ jobs:
           install_components: gke-gcloud-auth-plugin
 
       - name: Connect to GKE Cluster
-        run: gcloud container clusters get-credentials $GKE_CLUSTER --region $GKE_REGION --project $GCP_PROJECT_ID
+        run: gcloud container clusters get-credentials $GKE_CLUSTER --zone $GKE_ZONE --project $GCP_PROJECT_ID
 
       - name: Setup Helm
         uses: azure/setup-helm@v4
