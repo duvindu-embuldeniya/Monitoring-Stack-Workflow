@@ -82,3 +82,9 @@ kubectl get secret prometheus-grafana -o go-template='{{index .data "admin-passw
 
 8. Add Loki datasource in Grafana
 http://loki:3100
+
+
+
+{app="django"} |= ``
+{app="django"} |= `` | line_format `{{ regexReplaceAll "\\[.*?\\]\\s*" __line__ "" }}`
+Get-Content "Logs-2026-07-12 17_36_58.txt" | ForEach-Object { $_ -replace '^\S+\s+\S+\s+', '' } | Set-Content "clean_logs.txt"
